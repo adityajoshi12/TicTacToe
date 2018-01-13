@@ -8,189 +8,131 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    ImageButton ib1,ib2,ib3,ib4,ib5,ib6,ib7,ib8,ib9;
-    Boolean r1=true,r2=true,r3=true,r4=true,r5=true,r6=true,r7=true,r8=true,r9=true;
+    ImageButton[] ib= new ImageButton[10];
+    Boolean draw=true;
+    Boolean[] r= new Boolean[10];
    int a;
+   public int b;
+   int[] c=new int[10];
 
     public final static String Message="me";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i= getIntent();
-        a=Integer.parseInt(i.getStringExtra(Message));
+        Intent i = getIntent();
+        a = Integer.parseInt(i.getStringExtra(Message));
+        b=a+1;
+        for(int z=1;z<=9;z++) {
+            r[z] = true;
+            c[z] = 0;
+        }
         setContentView(R.layout.activity_main);
-        ib1= (ImageButton) findViewById(R.id.imageButton1);
-        ib2= (ImageButton) findViewById(R.id.imageButton2);
-        ib3= (ImageButton) findViewById(R.id.imageButton3);
-        ib4= (ImageButton) findViewById(R.id.imageButton4);
-        ib5= (ImageButton) findViewById(R.id.imageButton5);
-        ib6= (ImageButton) findViewById(R.id.imageButton6);
-        ib7= (ImageButton) findViewById(R.id.imageButton7);
-        ib8= (ImageButton) findViewById(R.id.imageButton8);
-        ib9= (ImageButton) findViewById(R.id.imageButton9);
-        ib1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r1==true) {
-                    if (a % 2 == 0) {
-                        ib1.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib1.setImageResource(R.drawable.tack);
-                        a++;
+        ib[1] = (ImageButton) findViewById(R.id.imageButton1);
+        ib[2] = (ImageButton) findViewById(R.id.imageButton2);
+        ib[3] = (ImageButton) findViewById(R.id.imageButton3);
+        ib[4] = (ImageButton) findViewById(R.id.imageButton4);
+        ib[5] = (ImageButton) findViewById(R.id.imageButton5);
+        ib[6] = (ImageButton) findViewById(R.id.imageButton6);
+        ib[7] = (ImageButton) findViewById(R.id.imageButton7);
+        ib[8] = (ImageButton) findViewById(R.id.imageButton8);
+        ib[9]= (ImageButton) findViewById(R.id.imageButton9);
+
+
+          for(int w=1;w<=9;w++){
+              final int j=w;
+                ib[j].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (r[j] == true) {
+                            if (a % 2 == 0) {
+                                ib[j].setImageResource(R.drawable.tick);
+                                a++;
+                                c[j] = 1;
+                            } else {
+                                ib[j].setImageResource(R.drawable.tack);
+                                a++;
+                                c[j] = -1;
+                            }
+
+                            r[j] = false;
+                        } else {
+                            Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
+                        }
+                        checkGame();
+
+                    }
+                });}
+
+  }
+    public void checkWinner(int b1, int b2, int b3){
+        if (b1==b2 && b2==b3 && b3==1){
+            Toast.makeText(MainActivity.this,"Player "+b+" wins ",Toast.LENGTH_LONG).show();
+            final Intent i = new Intent(MainActivity.this,Main2Activity.class);
+            Thread timer =new Thread(){
+                public void run () {
+                    try{
+                        sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        startActivity(i);
+                        finish();
                     }
 
-                    r1=false;
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r2==true) {
-                    if (a % 2 == 0) {
-                        ib2.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib2.setImageResource(R.drawable.tack);
-                        a++;
+            };
+            draw=false;
+        }
+       else if (b1==b2 && b2==b3 && b3==-1){
+            //player 2 wins
+            Toast.makeText(MainActivity.this,"Player "+(3-b)+" wins ",Toast.LENGTH_LONG).show();
+            final Intent i = new Intent(MainActivity.this,Main2Activity.class);
+            Thread timer =new Thread(){
+                public void run () {
+                    try{
+                        sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    r2=false;
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
+                    finally {
+                        startActivity(i);
+                        finish();
+                    }
 
-            }
-        });
-        ib3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r3==true) {
-                    if (a % 2 == 0) {
-                        ib3.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib3.setImageResource(R.drawable.tack);
-                        a++;
+                }
+            };
+            draw=false;
+        }
+        else if((a==9 || a==10)&&(draw==true)){
+            Toast.makeText(MainActivity.this,"Game Draw ",Toast.LENGTH_LONG).show();
+            final Intent i = new Intent(MainActivity.this,Main2Activity.class);
+            Thread timer =new Thread(){
+                public void run () {
+                    try{
+                        sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    r3=false;
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r4==true) {
-                    if (a % 2 == 0) {
-                        ib4.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib4.setImageResource(R.drawable.tack);
-                        a++;
+                    finally {
+                        startActivity(i);
+                        finish();
                     }
-                    r4=false;
+
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r5==true) {
-                    if (a % 2 == 0) {
-                        ib5.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib5.setImageResource(R.drawable.tack);
-                        a++;
-                    }
-                    r5=false;
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r6==true) {
-                    if (a % 2 == 0) {
-                        ib6.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib6.setImageResource(R.drawable.tack);
-                        a++;
-                    }
-                    r6=false;
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r7==true) {
-                    if (a % 2 == 0) {
-                        ib7.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib7.setImageResource(R.drawable.tack);
-                        a++;
-                    }
-                    r7=false;
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r8==true) {
-                    if (a % 2 == 0) {
-                        ib8.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib8.setImageResource(R.drawable.tack);
-                        a++;
-                    }
-                    r8=false;
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        ib9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(r9==true) {
-                    if (a % 2 == 0) {
-                        ib9.setImageResource(R.drawable.tick);
-                        a++;
-                    } else {
-                        ib9.setImageResource(R.drawable.tack);
-                        a++;
-                    }
-                    r9=false;
-                }
-                else{
-                     Toast.makeText(MainActivity.this, "Invalid move", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+            };
+        }
+
     }
+    public void checkGame(){
+            checkWinner(c[1],c[2],c[3]);
+            checkWinner(c[4],c[5],c[6]);
+            checkWinner(c[7],c[8],c[9]);
+            checkWinner(c[1],c[4],c[7]);
+            checkWinner(c[2],c[5],c[8]);
+            checkWinner(c[3],c[6],c[9]);
+            checkWinner(c[1],c[5],c[9]);
+            checkWinner(c[3],c[5],c[7]);
+    }
+
 }
